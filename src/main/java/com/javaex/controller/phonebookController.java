@@ -23,7 +23,7 @@ public class phonebookController {
 
 	// dao를 메모리에 올린다
 	@Autowired
-	private PhonebookDao phonebookDao;
+	private PhonebookDao phonebookDao;//new 쓰면서 하지마라. 왜? 여기서 편하게 쓰게 해주는데, new~ 하는 용법은 일 두번하는 거. 그럼 스프링 쓸 이유가 없음.
 	
 	
 	@Autowired
@@ -32,6 +32,7 @@ public class phonebookController {
 	// 메소드gs
 	// 메소드 일반
 
+	/*전화번호 전체 가져오기*/
 	@RequestMapping(value = "/list", method = { RequestMethod.GET, RequestMethod.POST })
 	public String list(Model model) {
 		System.out.println("PhonebookController.list()");
@@ -92,31 +93,23 @@ public class phonebookController {
 	
 		return "redirect:http://localhost:8888/phonebook3/list";
 	}
-	/*수정 폼*/
-	@RequestMapping(value = "/editform", method = { RequestMethod.GET, RequestMethod.POST })
-	public String editform(@RequestParam(value = "no") int no, Model model) {
-		System.out.println("phonebookController.edit()");
-
-		PersonVo personVo = phonebookDao.getPersonOne(no);
+	/*수정폼*/
+	@RequestMapping(value="/editform", method = {RequestMethod.GET, RequestMethod.POST})
+	public String editForm(@RequestParam(value="no") int no, Model model) {
+		System.out.println("PhonebookController.editForm()");
+		
+		PersonVo personVo = phonebookService.exeEditForm(no);
 		model.addAttribute("personVo", personVo);
-
+		
 		return "editForm";
 	}
-	/*수정*/
-	@RequestMapping(value = "/update", method = { RequestMethod.GET, RequestMethod.POST })
-	 public String update(@ModelAttribute PersonVo personVo) {
-		
+	/*수정 */
+	@RequestMapping(value="/edit", method = {RequestMethod.GET, RequestMethod.POST})
+	public String edit(@ModelAttribute PersonVo personVo) {
 		System.out.println("PhonebookController.edit()");
 		
-		System.out.println(personVo);
+		phonebookService.exeEditPerson(personVo);
 		
-		//phonebookDao의 메소드를 이용해서 저장한다
-		int count = phonebookDao.updatePerson(personVo);
-		System.out.println(count);
-		
-		//리스트로 리다이렉트(redirect:인터넷주소)
 		return "redirect:/list";
-		
 	}
-
 }

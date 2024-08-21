@@ -33,12 +33,30 @@ public class PhonebookService {
 		return personList;
 	}
 	
+	/*삭제*/
 	public int exePersonDelete(int no) {
-		System.out.println("PhonebookServixe.exePersonDelete()");
+		System.out.println("PhonebookService.exePersonDelete()");
 		System.out.println(no);
 	int count = phonebookDao.deletePerson(no);
 	return count;
 	
 	}
 
+	/*수정 폼*/
+	public PersonVo exeEditForm(int no) {
+		System.out.println("PhonebookService.exeEditForm()");
+		
+		PersonVo personVo = phonebookDao.getPersonOne(no);
+		
+		return personVo;
+	}
+	
+	/*수정*/
+	public int exeEditPerson(PersonVo personVo) {
+		System.out.println("PhonebookService.exeEdit()");
+		
+		int count = phonebookDao.updatePerson(personVo);
+		
+		return count;
+	}
 }
