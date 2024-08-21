@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.javaex.dao.PhonebookDao;
+import com.javaex.service.PhonebookService;
 import com.javaex.vo.PersonVo;
 
 
@@ -22,8 +23,11 @@ public class phonebookController {
 
 	// dao를 메모리에 올린다
 	@Autowired
-	private PhonebookDao phonebookDao = new PhonebookDao();
-
+	private PhonebookDao phonebookDao;
+	
+	
+	@Autowired
+	private PhonebookService phonebookService;
 	// 생성자
 	// 메소드gs
 	// 메소드 일반
@@ -32,10 +36,8 @@ public class phonebookController {
 	public String list(Model model) {
 		System.out.println("PhonebookController.list()");
 
-		List<PersonVo> personList = phonebookDao.getPersonList();
-		System.out.println(personList);
-
-		model.addAttribute("personList", personList);
+		List<PersonVo> personList=phonebookService.exeGetPerson();
+		model.addAttribute("personList",personList);
 		return "list";// 포워딩해줘 라고 모델한테 말함
 	}
 
@@ -54,9 +56,11 @@ public class phonebookController {
 		System.out.println(personVo);
 
 		// phonebookDao의 메소드를 이용해서 저장한다
-		int count = phonebookDao.insertPerson(personVo);
-		System.out.println(count);
-
+		//int count = phonebookDao.insertPerson(personVo);
+		//System.out.println(count);
+		
+		phonebookService.exeWriteperson(personVo); 
+		
 		// 리스트로 리다이렉트
 		return "redirect:/list";/* redirect:http://localhost:8888/phonebook3/list */
 	}
@@ -80,10 +84,12 @@ public class phonebookController {
 
 	/* 삭제 */
 	@RequestMapping(value = "/delete", method = { RequestMethod.GET, RequestMethod.POST })
-	public String delete(@RequestParam(value = "no") int no) {
+	public String delete(@RequestParam(value ="no") int no) {
 		System.out.println("PhonebookController.delete");
-
-		phonebookDao.deletePerson(no);
+		
+		phonebookService.exePersonDelete(no);
+		
+	
 		return "redirect:http://localhost:8888/phonebook3/list";
 	}
 	/*수정 폼*/

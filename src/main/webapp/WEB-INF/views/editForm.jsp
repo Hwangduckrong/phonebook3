@@ -30,7 +30,7 @@
 		</div>
 		
 		
-		<input type="text" name="personId" value="${personVo.personId}"><!-- 오타를 내면 안됨 -->
+		<input type="text" name="personId" value="${personVo.personId}"><!-- 오타를 내면 안됨 대소문자확인 -->
 		<br>
 		<button type="submit">수정(전송)</button>
 	</form>
